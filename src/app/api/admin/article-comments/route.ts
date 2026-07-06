@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      comments: comments.map(c => ({
+      comments: comments.map((c: any) => ({
         id: c.id,
         content: c.content,
         status: c.status,
