@@ -32,14 +32,14 @@ export async function GET(req: Request) {
       }
     });
 
-    const episodeIds = reports.map(r => r.episode_id).filter(id => id !== null) as number[];
+    const episodeIds = reports.map((r: any) => r.episode_id).filter((id: any) => id !== null) as number[];
     const episodes = await prisma.episodes.findMany({
       where: { id: { in: episodeIds } },
       select: { id: true, name: true }
     });
-    const episodeMap = new Map(episodes.map(e => [e.id, e.name]));
+    const episodeMap = new Map(episodes.map((e: any) => [e.id, e.name]));
 
-    const reportsWithEpisodes = reports.map(r => ({
+    const reportsWithEpisodes = reports.map((r: any) => ({
       ...r,
       episode_name: r.episode_id ? (episodeMap.get(r.episode_id) || `Tập ${r.episode_id}`) : null
     }));
