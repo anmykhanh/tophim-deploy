@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     });
 
     // Fetch like counts and user likes via raw SQL
-    const commentIds = comments.map(c => c.id);
+    const commentIds = comments.map((c: any) => c.id);
     let likeCountMap = new Map<number, number>();
     let userLikedSet = new Set<number>();
 
@@ -35,17 +35,17 @@ export async function GET(request: Request) {
       const likeCounts = await prisma.$queryRawUnsafe<{ comment_id: number; cnt: string }[]>(
         `SELECT comment_id, COUNT(*) as cnt FROM article_comment_likes WHERE comment_id IN (${idList}) GROUP BY comment_id`
       ).catch(() => []);
-      likeCountMap = new Map(likeCounts.map(r => [Number(r.comment_id), Number(r.cnt)]));
+      likeCountMap = new Map(likeCounts.map((r: any) => [Number(r.comment_id), Number(r.cnt)]));
 
       if (currentUserId) {
         const userLikes = await prisma.$queryRawUnsafe<{ comment_id: number }[]>(
           `SELECT comment_id FROM article_comment_likes WHERE comment_id IN (${idList}) AND user_id = ${currentUserId}`
         ).catch(() => []);
-        userLikedSet = new Set(userLikes.map(r => Number(r.comment_id)));
+        userLikedSet = new Set(userLikes.map((r: any) => Number(r.comment_id)));
       }
     }
 
-    const serializedComments = comments.map(c => {
+    const serializedComments = comments.map((c: any) => {
       const displayUser = { ...c.users, role: c.users.role ?? 'user' as const };
       return {
         id: c.id,
