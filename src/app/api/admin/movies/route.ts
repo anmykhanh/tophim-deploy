@@ -159,7 +159,7 @@ export async function POST(request: Request) {
     if (typeof actorIds === 'string') {
       try { parsedActorIds = JSON.parse(actorIds); } catch (e) {}
     } else if (Array.isArray(actorIds)) {
-      parsedActorIds = actorIds.map(id => parseInt(id));
+      parsedActorIds = actorIds.map((id: any) => parseInt(id));
     }
 
     const movie = await prisma.movies.create({
@@ -280,7 +280,7 @@ export async function PUT(request: Request) {
 
       if (parsedActorIds.length > 0) {
         await prisma.movie_actor.createMany({
-          data: parsedActorIds.map(actId => ({
+          data: parsedActorIds.map((actId: any) => ({
             movie_id: movieId,
             actor_id: actId
           }))

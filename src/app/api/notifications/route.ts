@@ -33,13 +33,13 @@ export async function GET(req: Request) {
     const reads = await prisma.notification_reads.findMany({
       where: {
         user_id: userId,
-        notification_id: { in: notificationsList.map(n => n.id) }
+        notification_id: { in: notificationsList.map((n: any) => n.id) }
       }
     });
 
-    const readIds = new Set(reads.map(r => r.notification_id));
+    const readIds = new Set(reads.map((r: any) => r.notification_id));
 
-    const notifications = notificationsList.map(n => ({
+    const notifications = notificationsList.map((n: any) => ({
       id: n.id,
       type: n.type,
       title: n.title,
@@ -49,7 +49,7 @@ export async function GET(req: Request) {
       is_read: readIds.has(n.id)
     }));
 
-    const unreadCount = notifications.filter(n => !n.is_read).length;
+    const unreadCount = notifications.filter((n: any) => !n.is_read).length;
 
     return NextResponse.json({ success: true, notifications, unreadCount });
   } catch (err: any) {
@@ -82,17 +82,17 @@ export async function PUT(req: Request) {
       const reads = await prisma.notification_reads.findMany({
         where: {
           user_id: userId,
-          notification_id: { in: notificationsList.map(n => n.id) }
+          notification_id: { in: notificationsList.map((n: any) => n.id) }
         },
         select: { notification_id: true }
       });
 
-      const readIds = new Set(reads.map(r => r.notification_id));
-      const unreadIds = notificationsList.map(n => n.id).filter(id => !readIds.has(id));
+      const readIds = new Set(reads.map((r: any) => r.notification_id));
+      const unreadIds = notificationsList.map((n: any) => n.id).filter((id: any) => !readIds.has(id));
 
       if (unreadIds.length > 0) {
         await prisma.notification_reads.createMany({
-          data: unreadIds.map(notifId => ({
+          data: unreadIds.map((notifId: any) => ({
             notification_id: notifId,
             user_id: userId
           })),

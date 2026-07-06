@@ -50,7 +50,7 @@ export async function GET(request: Request) {
       }
     });
 
-    const formattedFolders = folders.map(f => ({
+    const formattedFolders = folders.map((f: any) => ({
       id: f.id,
       name: f.name,
       is_public: f.is_public,
@@ -192,7 +192,7 @@ export async function POST(request: Request) {
         where: { user_id: userId },
         select: { id: true }
       });
-      const userFolderIds = userFolders.map(f => f.id);
+      const userFolderIds = userFolders.map((f: any) => f.id);
 
       // Perform updates inside a transaction
       await prisma.$transaction([
@@ -206,8 +206,8 @@ export async function POST(request: Request) {
         // Add this movie to the selected folders
         prisma.movie_folder_items.createMany({
           data: folderIds
-            .filter(fId => userFolderIds.includes(fId))
-            .map(fId => ({
+            .filter((fId: any) => userFolderIds.includes(fId))
+            .map((fId: any) => ({
               folder_id: fId,
               movie_id: movieId
             })),
