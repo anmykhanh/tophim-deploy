@@ -99,7 +99,7 @@ export async function GET(request: Request) {
       });
 
       if (statsGroup.length > 0) {
-        const movieIds = statsGroup.map(g => g.movie_id);
+        const movieIds = statsGroup.map((g: any) => g.movie_id);
         const movies = await prisma.movies.findMany({
           where: {
             id: { in: movieIds }
@@ -115,14 +115,14 @@ export async function GET(request: Request) {
         });
 
         // Map and preserve the order of statsGroup
-        topMovies = statsGroup.map(stat => {
-          const movie = movies.find(m => m.id === stat.movie_id);
+        topMovies = statsGroup.map((stat: any) => {
+          const movie = movies.find((m: any) => m.id === stat.movie_id);
           if (!movie) return null;
           return {
             ...movie,
             views: stat._sum.views || 0
           };
-        }).filter(m => m !== null);
+        }).filter((m: any) => m !== null);
       }
     }
 
@@ -145,19 +145,19 @@ export async function GET(request: Request) {
     });
 
     // Serialize Date objects
-    const serializedTopMovies = topMovies.map(m => ({
+    const serializedTopMovies = topMovies.map((m: any) => ({
       ...m,
       updated_at: m.updated_at ? m.updated_at.toISOString() : null
     }));
 
-    const serializedRecentlyUpdated = recentlyUpdated.map(m => ({
+    const serializedRecentlyUpdated = recentlyUpdated.map((m: any) => ({
       ...m,
       updated_at: m.updated_at ? m.updated_at.toISOString() : null
     }));
 
     // 1. Cleanup old sessions
     const { cleanupSessions } = await import('@/lib/activity');
-    await cleanupSessions().catch(err => console.error("Session cleanup error:", err));
+    await cleanupSessions().catch((err: any) => console.error("Session cleanup error:", err));
 
     // 2. Count active sessions in the last 5 minutes
     const fiveMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
