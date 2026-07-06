@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { cookies } from 'next/headers';
-import { users_role } from '@prisma/client';
+import { $Enums } from '@prisma/client';
 import { checkPermissions, getSession } from '@/lib/auth';
 import bcrypt from 'bcryptjs';
 
@@ -91,7 +91,7 @@ export async function PUT(request: Request) {
       if (role !== 'user' && role !== 'admin') {
         return NextResponse.json({ error: 'Quyền hạn không hợp lệ!' }, { status: 400 });
       }
-      updateData.role = role as users_role;
+      updateData.role = role as $Enums.users_role;
     }
 
     if (role_id !== undefined) {
