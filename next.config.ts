@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Tiết kiệm CPU xử lý ảnh cho VPS vì đã dùng proxy ảnh ngoài
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 export default nextConfig;
