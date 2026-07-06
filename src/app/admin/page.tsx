@@ -95,7 +95,7 @@ export default async function AdminPage() {
     onlineCount = activeOnline;
     todayUsersCount = activeToday;
 
-    settingsList.forEach(s => {
+    settingsList.forEach((s: any) => {
       settings[s.key] = s.value || '';
     });
   } catch (err) {
